@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="absolute h-full w-full overflow-auto dark:bg-slate-900 bg-white">
-    <a href="/logout" class="font-semibold text-red-500 hover:text-red-600 transition active:scale-90 absolute top-5 right-5">Выйти</a>
-    <div class="w-full h-full flex items-center justify-center">
-        <div class="flex flex-col gap-2 w-1/4">
-            <label for="query" class="text-white text-xl font-semibold">Накладной номер:</label>
-            <div class="flex flex-row items-center gap-2">
-            <input required name="query" id="query" type="text" class="bg-white outline-none px-4 py-2 rounded border border-transparent focus:border-blue-600 text-xl">
-                <button class="hover:cursor-pointer bg-blue-600 rounded text-white text-xl active:scale-95 transition hover:bg-blue-700 px-4 py-2">Найти</button>
-            </div>
+    <div class="absolute flex flex-col gap-2 h-full w-full overflow-auto dark:bg-slate-900 bg-white">
+        {% include 'components/_nav.html' %}
+        <div class="w-full h-full">
+            {% if success and document %}
+                There is document
+            {% elif success == False and not document %}
+                <div class="w-full h-full flex items-center justify-center">
+                    <p class="text-white font-medium text-2xl opacity-50">Информация о товаре с ID "{{  document_id }}" не найдена 😑</p>
+                </div>
+            {% else %}
+                Initial load
+            {% endif %}
         </div>
     </div>
-</div>
 {% endblock %}

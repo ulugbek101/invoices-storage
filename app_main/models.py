@@ -3,15 +3,18 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class DeliveryBatch(models.Model):
+    title = models.CharField(max_length=255)
     manifest_register_number = models.IntegerField()
     sender_name = models.CharField(max_length=255)
     send_date = models.DateField()
     total_products = models.IntegerField()
     total_recipients = models.IntegerField()
     total_weight = models.IntegerField()
-    total_price = models.DecimalField(max_digits=18, decimal_places=12)
+    total_price = models.DecimalField(max_digits=18, decimal_places=2)
 
     class Meta:
+        verbose_name = "Поставка"
+        verbose_name_plural = "Поставки"
         ordering = ["-send_date", "sender_name"]
 
     def __str__(self):
@@ -38,8 +41,12 @@ class Document(models.Model):
     recipient_country_code = models.CharField(max_length=2)
     recipient_city_name = models.CharField(max_length=255)
     recipient_address = models.CharField(max_length=255)
-    recipient_phonenumber = models.PhoneNumberField()
+    recipient_phonenumber = PhoneNumberField()
     box_number = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = "Товар"
+        verbose_name_plural = "Товары"
 
     def __str__(self):
         return self.document_id
@@ -47,3 +54,11 @@ class Document(models.Model):
     @property
     def total_price(self):
         return self.price * self.quantity
+
+
+class ExcelDocument(models.Model):
+    document = models.FileField(upload_to="documents/")
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.created}"
