@@ -21,9 +21,9 @@ class DeliveryBatch(models.Model):
         return f"{self.manifest_register_number} - {self.sender_name} {self.send_date}"
 
 
-class Document(models.Model):
+class Product(models.Model):
     delivery_batch = models.ForeignKey(to=DeliveryBatch, on_delete=models.PROTECT)
-    document_id = models.CharField(max_length=255)
+    product_id = models.CharField(max_length=255)
     invoice = models.CharField(max_length=255)
     awb = models.CharField(max_length=255)
     sticker = models.CharField(max_length=255)
@@ -37,6 +37,7 @@ class Document(models.Model):
     shk = models.CharField(max_length=255)
     recipient_fullname = models.CharField(max_length=255)
     recipient_passport = models.CharField(max_length=7)
+    recipient_pinfl = models.CharField(max_length=14)
     recipient_birthdate = models.DateField()
     recipient_country_code = models.CharField(max_length=2)
     recipient_city_name = models.CharField(max_length=255)
@@ -49,7 +50,7 @@ class Document(models.Model):
         verbose_name_plural = "Товары"
 
     def __str__(self):
-        return self.document_id
+        return self.product_id
 
     @property
     def total_price(self):

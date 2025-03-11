@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 
 from openpyxl import load_workbook
 
-from .models import ExcelDocument, DeliveryBatch, Document
+from .models import ExcelDocument, DeliveryBatch, Product
 
 
 @receiver(signal=post_save, sender=ExcelDocument)
@@ -23,7 +23,7 @@ def save_and_populate_document(sender, instance, created, **kwargs):
         total_price = float(sheet.cell(row=4, column=2).value.lower().replace("руб", "").split("стоимость")[-1].strip().replace(",", ".").replace(" ", ""))
         send_date = datetime.strptime(sheet.cell(row=4, column=1).value.split()[-1], "%d.%m.%Y").date()
 
-        print(sheet.cell(row=4, column=2).value.lower().replace(",", ".").replace("руб", "").split()[-1].strip())
+        # print(sheet.cell(row=4, column=2).value.lower().replace(",", ".").replace("руб", "").split()[-1].strip())
 
         delivery_batch = DeliveryBatch.objects.create(
             title=title,
@@ -36,30 +36,36 @@ def save_and_populate_document(sender, instance, created, **kwargs):
             send_date=send_date,
         )
 
+        i = 0
         for row in sheet.iter_rows(min_row=6, values_only=True):
             if row[0] is None:
                 break
 
-            Document.objects.create(
-                tracking_number=row[0],
-                invoice_number=row[1],
+            print(row)
+
+            Product.objects.create(
+                delivery_batch=delivery_batch,
+                document_id=row[0],
+                invoice=row[1],
                 awb=row[2],
-                shipment_id=row[3],
+                sticker=row[3],
                 product_name=row[4],
-                net_weight=row[5],
-                gross_weight=row[6],
-                quantity=int(row[7]),
-                unit_price=float(row[8]),
-                total_price=float(row[9]),
-                customs_code=row[10],
-                barcode=row[11],
-                recipient_name=row[12],
-                passport_number=row[13],
-                pinfl=row[14],
-                recipient_address=row[15],
-                phone_number=row[16],
-                box_number=row[17],
-                birth_date=datetime.strptime(row[18], "%d.%m.%Y").date(),
+                netto=float(row[6].replace(",", ".")),
+                brutto=float(row[7].replace(",", ".")),
+                quantity=int(row[8]),
+                price=float(row[9].replace(",", ".")),
+                currency=row[10],
+                tn_ved=row[12],
+                shk=row[13],
+                recipient_fullname=row[14].title(),
+                recipient_passport=row[15],
+                recipient_pinfl=row[16],
+                recipient_birthdate=datetime.strptime(row[17], "%d.%m.%Y").date(),
+                recipient_country_code=row[18],
+                recipient_city_name=row[19],
+                recipient_address=[20],
+                recipient_phonenumber=row[21],
+                box_number=row[22],
             )
 
             # TODO: for cycle is not checked to work properly, i just copied and pasted
