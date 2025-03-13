@@ -27,6 +27,14 @@ def index(request):
     return render(request, "index.html", context)
 
 
+@login_required(login_url="login")
+def detail(request, product_id):
+    product = get_object_or_404(Product, product_id=product_id)
+    context = {
+        "product": product,
+    }
+    return render(request, "detail.html", context)
+
 def user_logout(request):
     logout(request)
     return redirect("login")
