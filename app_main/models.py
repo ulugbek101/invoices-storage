@@ -38,7 +38,7 @@ class Product(models.Model):
     recipient_fullname = models.CharField(max_length=255)
     recipient_passport = models.CharField(max_length=7)
     recipient_pinfl = models.CharField(max_length=14)
-    recipient_birthdate = models.DateField()
+    recipient_birthdate = models.CharField(max_length=10)
     recipient_country_code = models.CharField(max_length=2)
     recipient_city_name = models.CharField(max_length=255)
     recipient_address = models.CharField(max_length=255)
@@ -60,6 +60,10 @@ class Product(models.Model):
 class ExcelDocument(models.Model):
     document = models.FileField(upload_to="documents/")
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Excel документ"
+        verbose_name_plural = "Excel документы"
 
     def __str__(self):
         return f"{self.created}"

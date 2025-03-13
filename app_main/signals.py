@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -36,37 +36,31 @@ def save_and_populate_document(sender, instance, created, **kwargs):
             send_date=send_date,
         )
 
-        i = 0
         for row in sheet.iter_rows(min_row=6, values_only=True):
             if row[0] is None:
                 break
 
-            print(row)
-
             Product.objects.create(
                 delivery_batch=delivery_batch,
-                document_id=row[0],
+                product_id=row[0],
                 invoice=row[1],
                 awb=row[2],
                 sticker=row[3],
                 product_name=row[4],
-                netto=float(row[6].replace(",", ".")),
-                brutto=float(row[7].replace(",", ".")),
+                netto=float(row[6]),
+                brutto=float(row[7]),
                 quantity=int(row[8]),
-                price=float(row[9].replace(",", ".")),
+                price=float(row[9]),
                 currency=row[10],
                 tn_ved=row[12],
                 shk=row[13],
                 recipient_fullname=row[14].title(),
                 recipient_passport=row[15],
                 recipient_pinfl=row[16],
-                recipient_birthdate=datetime.strptime(row[17], "%d.%m.%Y").date(),
+                recipient_birthdate=str(row[17])[:11],
                 recipient_country_code=row[18],
                 recipient_city_name=row[19],
                 recipient_address=[20],
                 recipient_phonenumber=row[21],
-                box_number=row[22],
+                box_number=row[22]
             )
-
-            # TODO: for cycle is not checked to work properly, i just copied and pasted
-

@@ -4,23 +4,23 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 
-from .models import Document
+from .models import Product
 
 
 @login_required(login_url="login")
 def index(request):
     if request.method == "POST":
-        document_id = request.POST.get("document_id")
+        product_id = request.POST.get("product_id")
 
         try:
-            document = Document.objects.get(id=document_id)
+            products = Product.objects.filter(invoice=product_id)
         except:
-            document = None
+            products = None
 
-        if not document:
-            context = {"success": False, "document": None, "document_id": document_id}
+        if not products:
+            context = {"success": False, "products": None, "product_id": product_id}
         else:
-            context = {"success": True, "document": document, "document_id": document_id}
+            context = {"success": True, "products": products, "product_id": product_id}
         return render(request, "index.html", context)
 
     context = {}
