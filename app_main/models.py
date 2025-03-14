@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -22,7 +24,8 @@ class DeliveryBatch(models.Model):
 
 
 class Product(models.Model):
-    delivery_batch = models.ForeignKey(to=DeliveryBatch, on_delete=models.PROTECT)
+    id = models.UUIDField(default=uuid4, unique=True, editable=False, primary_key=True)
+    delivery_batch = models.ForeignKey(to=DeliveryBatch, on_delete=models.CASCADE)
     product_id = models.CharField(max_length=255)
     invoice = models.CharField(max_length=255)
     awb = models.CharField(max_length=255)

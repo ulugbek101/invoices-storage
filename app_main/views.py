@@ -18,18 +18,26 @@ def index(request):
             products = None
 
         if not products:
-            context = {"success": False, "products": None, "product_id": product_id}
+            context = {"success": False, "products": None, "id": product_id}
         else:
-            context = {"success": True, "products": products, "product_id": product_id}
+            context = {"success": True, "products": products, "id": product_id}
         return render(request, "index.html", context)
 
-    context = {}
+    from_product = request.GET.get("from")
+
+    if from_product:
+        try:
+            products = Product.objects.filter(invoice=from_product)
+        except:
+            products = None
+
+    context = {"success": True, "products": products, "id": from_product}
     return render(request, "index.html", context)
 
 
 @login_required(login_url="login")
-def detail(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
+def detail(request, id):
+    product = get_object_or_404(Product, id=id)
     context = {
         "product": product,
     }
