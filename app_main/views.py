@@ -30,8 +30,9 @@ def index(request):
             products = Product.objects.filter(invoice=from_product)
         except:
             products = None
-
-    context = {"success": True, "products": products, "id": from_product}
+        context = {"success": True, "products": products, "id": from_product}
+    else:
+        context = {}
     return render(request, "index.html", context)
 
 

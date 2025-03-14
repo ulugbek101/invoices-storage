@@ -27,7 +27,12 @@ SECRET_KEY = "django-insecure-rg)@uf3zkkt7gwlh%juf(#%0)$^yq!4-k$y1c0q%e(ti-=&uc1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "cargo-star.uz",
+    "www.cargo-star.uz",
+]
 
 
 # Application definition
