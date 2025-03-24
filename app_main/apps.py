@@ -7,4 +7,4 @@ class AppMainConfig(AppConfig):
     verbose_name = "Товары и Поставки"
 
     def ready(self):
-        from . import signals
+        import app_main.signals

@@ -10,4 +10,6 @@ admin.site.index_title = "Добро пожаловать в администр�
 admin.site.unregister(Group)
 admin.site.register(models.DeliveryBatch)
 admin.site.register(models.ExcelDocument)
+admin.site.register(models.SupplierExcelDocument)
 admin.site.register(models.Product)
+admin.site.register(models.Supplier)

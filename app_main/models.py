@@ -61,7 +61,7 @@ class Product(models.Model):
 
 
 class ExcelDocument(models.Model):
-    document = models.FileField(upload_to="documents/")
+    document = models.FileField(upload_to="documents/products/")
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -70,3 +70,34 @@ class ExcelDocument(models.Model):
 
     def __str__(self):
         return f"{self.created}"
+
+
+class SupplierExcelDocument(models.Model):
+    document = models.FileField(upload_to="documents/suppliers/")
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Excel документ поставщика"
+        verbose_name_plural = "Excel документы поставщиков"
+
+
+class Supplier(models.Model):
+    date = models.DateField(null=True)
+    sender = models.CharField(max_length=255, null=True)
+    number = models.CharField(max_length=255, null=True)
+    country = models.CharField(max_length=50, null=True)
+    zone = models.CharField(max_length=1, null=True)
+    what_is_inside = models.CharField(max_length=3, null=True)
+    weight = models.DecimalField(max_digits=12, decimal_places=2, null=True)
+    payment_type = models.CharField(max_length=10, null=True)
+    price = models.CharField(max_length=50, null=True)
+    additional_percent = models.CharField(max_length=3, null=True)
+    final_price = models.CharField(max_length=50, null=True)
+
+    class Meta:
+        ordering = ['-date']
+        verbose_name = "Поставщик"
+        verbose_name_plural = "Поставщики"
+
+    def __str__(self):
+        return f"{self.sender} - {self.date}"

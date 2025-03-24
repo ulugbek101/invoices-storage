@@ -1,13 +1,15 @@
 from datetime import datetime, date
+from decimal import Decimal, InvalidOperation
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 from openpyxl import load_workbook
 
-from .models import ExcelDocument, DeliveryBatch, Product
+from .models import ExcelDocument, DeliveryBatch, Product, SupplierExcelDocument, Supplier
 
 
-@receiver(signal=post_save, sender=ExcelDocument)
+@receiver(post_save, sender=ExcelDocument)
 def save_and_populate_document(sender, instance, created, **kwargs):
     # if created:
     file = instance.document
@@ -19,13 +21,15 @@ def save_and_populate_document(sender, instance, created, **kwargs):
     total_products = int(sheet.cell(row=1, column=2).value.split()[-1])
     total_recipients = int(sheet.cell(row=2, column=2).value.split()[-1])
     sender_name = sheet.cell(row=3, column=1).value.lower().split("отправитель")[-1].strip().upper()
-    total_weight = float(sheet.cell(row=3, column=2).value.lower().replace("кг", "").replace("kg", "").replace(",", ".").split()[-1])
-    total_price = float(sheet.cell(row=4, column=2).value.lower().replace("руб", "").split("стоимость")[-1].strip().replace(",", ".").replace(" ", ""))
+    total_weight = float(
+        sheet.cell(row=3, column=2).value.lower().replace("кг", "").replace("kg", "").replace(",", ".").split()[-1])
+    total_price = float(
+        sheet.cell(row=4, column=2).value.lower().replace("руб", "").split("стоимость")[-1].strip().replace(",",
+                                                                                                            ".").replace(
+            " ", ""))
     send_date = datetime.strptime(sheet.cell(row=4, column=1).value.split()[-1], "%d.%m.%Y").date()
 
-    # print(sheet.cell(row=4, column=2).value.lower().replace(",", ".").replace("руб", "").split()[-1].strip())
-
-    delivery_batch = DeliveryBatch.objects.create(
+    delivery_batch, delivery_batch_created = DeliveryBatch.objects.get_or_create(
         title=title,
         manifest_register_number=manifest_register_number,
         total_products=total_products,
@@ -40,7 +44,7 @@ def save_and_populate_document(sender, instance, created, **kwargs):
         if row[0] is None:
             break
 
-        Product.objects.create(
+        product, product_created = Product.objects.get_or_create(
             delivery_batch=delivery_batch,
             product_id=row[0],
             invoice=row[1],
@@ -63,4 +67,35 @@ def save_and_populate_document(sender, instance, created, **kwargs):
             recipient_address=row[20],
             recipient_phonenumber=row[21],
             box_number=row[22]
+        )
+
+
+@receiver(post_save, sender=SupplierExcelDocument)
+def save_and_populate_suppliers(sender, instance, created, **kwargs):
+    file = instance.document
+    wb = load_workbook(file)
+
+    # Ensure "FedEx" sheet is selected
+    sheet_name = "FedEx"
+    if sheet_name not in wb.sheetnames:
+        return  # Exit if the sheet doesn't exist
+
+    sheet = wb[sheet_name]
+
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        if not row[1]:  # Stop if no more valid data
+            break
+
+        Supplier.objects.create(
+            date=row[1] if row[1] else None,
+            sender=row[2].strip().title() if isinstance(row[2], str) else None,
+            number=row[3] if row[3] else None,
+            country=row[4].strip().title() if isinstance(row[4], str) else None,
+            zone=row[5].strip().upper() if isinstance(row[5], str) else None,
+            what_is_inside=row[6].strip().upper() if isinstance(row[6], str) else None,
+            weight=Decimal(row[7]) if row[7] else None,
+            payment_type=row[8].strip().upper() if isinstance(row[8], str) else None,
+            price=row[9] if row[9] else "",
+            additional_percent=row[10].replace("%", "") if isinstance(row[10], str) else "",
+            final_price=str((Decimal(row[10].replace("%", "").replace(",", ".")) + Decimal(row[10].replace("%", "").replace(",", ".")) * Decimal(0.12)) * Decimal(row[10].replace("%", "").replace(",", ".")) + Decimal(row[10].replace("%", "").replace(",", ".")) + Decimal(row[10].replace("%", "").replace(",", ".")) * Decimal(0.12)) if row[10] else None  # (J31+J31*12%)*K31+J31+J31*12%
         )
