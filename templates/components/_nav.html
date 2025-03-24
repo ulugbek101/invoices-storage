@@ -9,7 +9,7 @@
             Главная
         </a>
     </div>
-    <form action="{% url 'index' %}" method="post" class="flex items-center gap-2 w-1/2">
+    <form action="{% if redirect_to %}{{ redirect_to }}{% else %}{% url 'index' %}{% endif %}" method="post" class="flex items-center gap-2 w-1/2">
         {% csrf_token %}
         <div class="relative w-full">
             <input value="{{ id }}" name="product_id" type="text" id="floating_outlined"

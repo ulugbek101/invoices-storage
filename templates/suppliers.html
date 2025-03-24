@@ -1,94 +1,164 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
     <div class="absolute flex flex-col gap-2 h-full w-full overflow-auto dark:bg-slate-900 bg-white">
-        {% include 'components/_nav.html' with search_placeholder='Поиск по Отправителю или по Стране,' %}
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-5">
+        {% include 'components/_nav.html' with search_placeholder='Поиск по Отправителю или по Стране' redirect_to="/suppliers/" %}
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-5 my-10">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        №
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Дата
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Отправитель
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        #
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Страна
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Зона
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Содержимое
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Вес
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Вид оплаты
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Сумма по тарифу
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Доп надбавка
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Итоговая сумма
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {#                            {% for product in products %}#}
-                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                    <th scope="row"
-                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        123
-                    </th>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                    <td class="px-6 py-4">
-                        123
-                    </td>
-                </tr>
-                {#                            {% endfor %}#}
-                </tbody>
-            </table>
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-start">
+                            №
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Дата
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Отправитель
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            #
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Страна
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Зона
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Содержимое
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Вес
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Вид оплаты
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Сумма по тарифу
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Доп надбавка
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Итоговая сумма
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for supplier in all_suppliers %}
+                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-start">
+                                {{ forloop.counter }}
+                            </th>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.date|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                {{ supplier.sender|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.number|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.country|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.zone|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.what_is_inside|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.weight|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.payment_type|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.price|intcomma|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.additional_percent|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ supplier.final_price|intcomma|default:"-" }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
         </div>
+       <div class="mb-5 flex items-center justify-center gap-2">
+    {% if all_suppliers.has_previous %}
+        <a href="?page={{ all_suppliers.previous_page_number }}"
+           class="py-1.5 px-3 rounded bg-gray-400 dark:bg-gray-700 text-black dark:text-white font-semibold hover:bg-gray-500 transition">
+            &larr; Пред.
+        </a>
+    {% endif %}
+
+    {% with total_pages=all_suppliers.paginator.num_pages %}
+        {% if total_pages > 1 %}
+            {% if all_suppliers.number > 3 %}
+                <a href="?page=1"
+                   class="py-1.5 px-3 rounded bg-slate-500 dark:bg-blue-600 text-black dark:text-white font-semibold hover:bg-blue-700 transition">
+                    1
+                </a>
+                {% if all_suppliers.number > 4 %}
+                    <span class="px-2 text-gray-500">...</span>
+                {% endif %}
+            {% endif %}
+
+            {% for num in all_suppliers.paginator.page_range %}
+                {% if num >= all_suppliers.number|add:-2 and num <= all_suppliers.number|add:2 %}
+                    {% if all_suppliers.number == num %}
+                        <span class="py-1.5 px-3 rounded bg-blue-950 text-white font-semibold shadow-md">
+                            {{ num }}
+                        </span>
+                    {% else %}
+                        <a href="?page={{ num }}"
+                           class="py-1.5 px-3 rounded bg-slate-500 dark:bg-blue-600 text-black dark:text-white font-semibold hover:bg-blue-700 transition">
+                            {{ num }}
+                        </a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if all_suppliers.number < total_pages|add:-2 %}
+                <span class="px-2 text-gray-500">...</span>
+                <a href="?page={{ total_pages }}"
+                   class="py-1.5 px-3 rounded bg-slate-500 dark:bg-blue-600 text-black dark:text-white font-semibold hover:bg-blue-700 transition">
+                    {{ total_pages }}
+                </a>
+            {% endif %}
+        {% endif %}
+    {% endwith %}
+
+    {% if all_suppliers.has_next %}
+        <a href="?page={{ all_suppliers.next_page_number }}"
+           class="py-1.5 px-3 rounded bg-gray-400 dark:bg-gray-700 text-black dark:text-white font-semibold hover:bg-gray-500 transition">
+            След. &rarr;
+        </a>
+    {% endif %}
+</div>
+
+<!-- Page Input for Direct Navigation -->
+<div class="mt-4 flex flex-col items-center">
+    <form method="GET" action="" class="flex items-center gap-2">
+        <input type="number" name="page" min="1" max="{{ all_suppliers.paginator.num_pages }}" required
+               class="w-16 py-1 px-2 border rounded text-center dark:bg-gray-800 dark:text-white"
+               placeholder="Page"
+               value="{{ all_suppliers.number }}">
+        <button type="submit"
+                class="py-1 px-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+            Го
+        </button>
+    </form>
+    <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">
+        Total Pages: <span class="font-semibold">{{ all_suppliers.paginator.num_pages }}</span>
+    </p>
+</div>
     </div>
 {% endblock content %}

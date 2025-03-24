@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # Phone numbers
     "phonenumber_field",
     "whitenoise",
+    "django.contrib.humanize",
     
     # Custom apps
     "app_main",

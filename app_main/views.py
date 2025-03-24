@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Product, Supplier
 
@@ -16,41 +17,37 @@ def index(request):
 @login_required(login_url='login')
 def suppliers(request):
     all_suppliers = Supplier.objects.all()
+    page = request.GET.get('page', 1)
+    context = {}
 
     if request.method == 'POST':
-        query = request.POST.get('product_id')
+        query = request.POST.get('product_id', '').strip()
 
-        try:
-            supplier = all_suppliers.filter(
+        if query:
+            filtered_suppliers = Supplier.objects.filter(
                 Q(sender__icontains=query) |
                 Q(country__icontains=query) |
                 Q(weight__icontains=query)
             )
-        except:
-            supplier = None
-
-        if not supplier:
-            context = {
-                "error": True,
-                "message": "Поставщие не найден",
-                "supplier": None,
-                'all_suppliers': None
-            }
+            context.update({"id": query})
         else:
-            context = {
-                "error": False,
-                "message": "Поставщик найден",
-                supplier: supplier,
-                'all_suppliers': None
-            }
-        return render(request, 'suppliers.html', context)
+            filtered_suppliers = all_suppliers  # If query is empty, return all
 
-    context = {
-        'error': False,
-        'message': '',
-        'supplier': None,
-        'all_suppliers': all_suppliers,
-    }
+        paginator = Paginator(filtered_suppliers, 50)  # Apply pagination to filtered results
+    else:
+        paginator = Paginator(all_suppliers, 50)
+
+    try:
+        qs = paginator.page(page)
+    except (PageNotAnInteger, EmptyPage):
+        qs = paginator.page(1)
+
+    context.update({
+        "error": not qs.object_list.exists(),
+        "message": "Поставщики не найдены" if not qs.object_list.exists() else "Поставщики найдены",
+        "all_suppliers": qs,
+    })
+
     return render(request, 'suppliers.html', context)
 
 
