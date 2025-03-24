@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="absolute flex flex-col gap-2 h-full w-full overflow-auto dark:bg-slate-900 bg-white">
-        {% include 'components/_nav.html' with search_placeholder='Поиск по накладному номеру' %}
+        {% include 'components/_nav.html' with search_placeholder='Поиск по накладному номеру' redirect_to="/invoices/" %}
         <div class="w-full h-full">
             {% if success and products %}
 
