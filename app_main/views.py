@@ -27,7 +27,8 @@ def suppliers(request):
             filtered_suppliers = Supplier.objects.filter(
                 Q(sender__icontains=query) |
                 Q(country__icontains=query) |
-                Q(weight__icontains=query)
+                Q(weight__icontains=query) | 
+                Q(number__icontains=query)
             )
             context.update({"id": query})
         else:

@@ -93,7 +93,7 @@ def save_and_populate_suppliers(sender, instance, created, **kwargs):
             country=row[4].strip().title() if isinstance(row[4], str) else None,
             zone=row[5].strip().upper() if isinstance(row[5], str) else None,
             what_is_inside=row[6].strip().upper() if isinstance(row[6], str) else None,
-            weight=Decimal(row[7]) if row[7] else None,
+            weight=Decimal(row[7].replace("шт", "").strip()) if row[7] else None,
             payment_type=row[8].strip().upper() if isinstance(row[8], str) else None,
             price=row[9] if row[9] else "",
             additional_percent=row[10].replace("%", "") if isinstance(row[10], str) else "",

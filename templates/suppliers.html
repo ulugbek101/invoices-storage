@@ -60,7 +60,7 @@
                                 {{ supplier.sender|default:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ supplier.number|default:"-" }}
+                                {{ supplier.number|cut:".0"|default:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
                                 {{ supplier.country|default:"-" }}
