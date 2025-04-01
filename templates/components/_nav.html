@@ -1,4 +1,4 @@
-<nav class="w-full flex items-center justify-between p-5">
+<nav style="background: #0f172a;" class="w-full flex items-center justify-between p-5">
     <div class="flex items-center gap-10">
         <a href="/logout"
            class="font-semibold text-red-500 transition active:scale-95 hover:text-white hover:bg-red-600 border border-red-500 p-2.5 rounded-md">
@@ -11,12 +11,12 @@
     </div>
     <form action="{% if redirect_to %}{{ redirect_to }}{% else %}{% url 'index' %}{% endif %}" method="post" class="flex items-center gap-2 w-1/2">
         {% csrf_token %}
-        <div class="relative w-full">
+        <div class="relative w-full border border-slate-300 rounded-lg">
             <input value="{{ id }}" name="product_id" type="text" id="floating_outlined"
-                   class="w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-md border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                   class="text-white w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-md border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                    placeholder=" "/>
-            <label for="floating_outlined"
-                   class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
+            <label style="background: #0f172a;" for="floating_outlined"
+                   class="hover:cursor-text absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                 {{ search_placeholder }}
             </label>
         </div>
