@@ -3,10 +3,10 @@
 
 {% block content %}
     <div style="background: #0f172a;" class="absolute flex flex-col gap-2 h-full w-full overflow-auto bg-slate-900 bg-white">
-        {% include 'components/_nav.html' with search_placeholder='Поиск по Отправителю или по Стране' redirect_to="/suppliers/" %}
+        {% include 'components/_nav.html' with search_placeholder='Поиск по накладному номеру' redirect_to="/suppliers/" %}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-5 my-10">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 bg-gray-700 text-gray-400">
+                    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-white">
                             №

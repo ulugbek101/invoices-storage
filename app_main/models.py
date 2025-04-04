@@ -15,8 +15,8 @@ class DeliveryBatch(models.Model):
     total_price = models.DecimalField(max_digits=18, decimal_places=2)
 
     class Meta:
-        verbose_name = "Поставка"
-        verbose_name_plural = "Поставки"
+        verbose_name = "Поставка товара"
+        verbose_name_plural = "Поставки товаров"
         ordering = ["-send_date", "sender_name"]
 
     def __str__(self):
@@ -65,8 +65,8 @@ class ExcelDocument(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Excel документ"
-        verbose_name_plural = "Excel документы"
+        verbose_name = "Excel документ для товара"
+        verbose_name_plural = "Excel документы для товаров"
 
     def __str__(self):
         return f"{self.created}"
