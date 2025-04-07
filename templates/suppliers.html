@@ -7,25 +7,25 @@
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-5 my-10">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-gray-400">
                     <thead class="text-xs uppercase bg-gray-700 text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-start text-white">
-                            №
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-center text-white">
-                            Отправитель
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-center text-white">
-                            #
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-center text-white">
-                            Страна
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-center text-white">
-                            Вес
-                        </th>
-                    </tr>
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-start text-white">
+                                №
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-white">
+                                Отправитель
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-white">
+                                #
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-white">
+                                Страна
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-white">
+                                Вес
+                            </th>
+                        </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-gray-700 text-gray-400">
                         {% for supplier in all_suppliers %}
                             <tr class="odd:bg-gray-900 even:bg-gray-800 border-b border-gray-700 border-gray-200">
                                 <th scope="row"
@@ -47,76 +47,7 @@
                             </tr>
                         {% endfor %}
                     </tbody>
-                </table>
+            </table>
         </div>
-       <div class="mb-5 flex items-center justify-center gap-2">
-    {% if all_suppliers.has_previous %}
-        <a href="?page={{ all_suppliers.previous_page_number }}"
-           class="py-1.5 px-3 rounded bg-gray-400 bg-gray-700 text-black text-white font-semibold hover:bg-gray-500 transition">
-            &larr; Пред.
-        </a>
-    {% endif %}
-
-    {% with total_pages=all_suppliers.paginator.num_pages %}
-        {% if total_pages > 1 %}
-            {% if all_suppliers.number > 3 %}
-                <a href="?page=1"
-                   class="py-1.5 px-3 rounded bg-slate-500 bg-blue-600 text-black text-white font-semibold hover:bg-blue-700 transition">
-                    1
-                </a>
-                {% if all_suppliers.number > 4 %}
-                    <span class="px-2 text-gray-500">...</span>
-                {% endif %}
-            {% endif %}
-
-            {% for num in all_suppliers.paginator.page_range %}
-                {% if num >= all_suppliers.number|add:-2 and num <= all_suppliers.number|add:2 %}
-                    {% if all_suppliers.number == num %}
-                        <span class="py-1.5 px-3 rounded bg-blue-950 text-white font-semibold shadow-md">
-                            {{ num }}
-                        </span>
-                    {% else %}
-                        <a href="?page={{ num }}"
-                           class="py-1.5 px-3 rounded bg-slate-500 bg-blue-600 text-black text-white font-semibold hover:bg-blue-700 transition">
-                            {{ num }}
-                        </a>
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-
-            {% if all_suppliers.number < total_pages|add:-2 %}
-                <span class="px-2 text-gray-500">...</span>
-                <a href="?page={{ total_pages }}"
-                   class="py-1.5 px-3 rounded bg-slate-500 bg-blue-600 text-black text-white font-semibold hover:bg-blue-700 transition">
-                    {{ total_pages }}
-                </a>
-            {% endif %}
-        {% endif %}
-    {% endwith %}
-
-    {% if all_suppliers.has_next %}
-        <a href="?page={{ all_suppliers.next_page_number }}"
-           class="py-1.5 px-3 rounded bg-gray-400 bg-gray-700 text-black text-white font-semibold hover:bg-gray-500 transition">
-            След. &rarr;
-        </a>
-    {% endif %}
-</div>
-
-<!-- Page Input for Direct Navigation -->
-<div class="mt-4 flex flex-col items-center">
-    <form method="GET" action="" class="flex items-center gap-2">
-        <input type="number" name="page" min="1" max="{{ all_suppliers.paginator.num_pages }}" required
-               class="w-16 py-1 px-2 border rounded text-center bg-gray-800 text-white"
-               placeholder="Page"
-               value="{{ all_suppliers.number }}">
-        <button type="submit"
-                class="py-1 px-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-            Го
-        </button>
-    </form>
-    <p class="mt-2 text-gray-500 text-gray-400 text-sm">
-        Всего страниц: <span class="font-semibold">{{ all_suppliers.paginator.num_pages }}</span>
-    </p>
-</div>
     </div>
 {% endblock content %}
