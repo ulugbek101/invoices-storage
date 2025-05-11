@@ -16,17 +16,13 @@ def save_and_populate_document(sender, instance, created, **kwargs):
     wb = load_workbook(file)
     sheet = wb.active
 
-    title = sheet.cell(row=1, column=1).value.strip().capitalize()
-    manifest_register_number = sheet.cell(row=2, column=1).value.split("№")[-1].strip()
-    total_products = int(sheet.cell(row=1, column=2).value.split()[-1])
-    total_recipients = int(sheet.cell(row=2, column=2).value.split()[-1])
+    title = sheet.cell(row=1, column=1)
+    manifest_register_number = sheet.cell(row=2, column=1).value.split("№")[-1]
+    total_products = sheet.cell(row=1, column=2).value.split()[-1]
+    total_recipients = sheet.cell(row=2, column=2).value.split()[-1]
     sender_name = sheet.cell(row=3, column=1).value.lower().split("отправитель")[-1].strip().upper()
-    total_weight = float(
-        sheet.cell(row=3, column=2).value.lower().replace("кг", "").replace("kg", "").replace(",", ".").split()[-1])
-    total_price = float(
-        sheet.cell(row=4, column=2).value.lower().replace("руб", "").split("стоимость")[-1].strip().replace(",",
-                                                                                                            ".").replace(
-            " ", ""))
+    total_weight = sheet.cell(row=3, column=2).value
+    total_price = sheet.cell(row=4, column=2).value
     send_date = datetime.strptime(sheet.cell(row=4, column=1).value.split()[-1], "%d.%m.%Y").date()
 
     delivery_batch, delivery_batch_created = DeliveryBatch.objects.get_or_create(
@@ -97,5 +93,7 @@ def save_and_populate_suppliers(sender, instance, created, **kwargs):
             payment_type=row[8].strip().upper() if isinstance(row[8], str) else None,
             price=row[9] if row[9] else "",
             additional_percent=row[10].replace("%", "") if isinstance(row[10], str) else "",
-            final_price=str(round((Decimal(row[10]) + Decimal(row[10]) * Decimal(0.12)) * Decimal(row[10]) + Decimal(row[10]) + Decimal(row[10]) * Decimal(0.12), 2)) if row[10] else None  # (J31+J31*12%)*K31+J31+J31*12%
+            # final_price=str(round(
+            #     (Decimal(row[10]) + Decimal(row[10]) * Decimal(0.12)) * Decimal(row[10]) + Decimal(row[10]) + Decimal(
+            #         row[10]) * Decimal(0.12), 2)) if row[10] else None  # (J31+J31*12%)*K31+J31+J31*12%
         )
