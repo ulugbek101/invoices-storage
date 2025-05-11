@@ -10,15 +10,15 @@
             <div class="flex items-start justify-start gap-5">
                 <div class="flex flex-col w-1/2 border border-slate-500 rounded-lg">
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">
-                        <span class="text-white text-xl">Товар:</span> 
+                        <span class="text-white text-xl">Наименование товара:</span>
                         <span class="text-white text-xl font-medium text-end max-w-[20rem]">{{ product.product_name }}</span>
                     </p>
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">
-                        <span class="text-white text-xl">Накладной:</span> 
+                        <span class="text-white text-xl">Номер какладной:</span>
                         <span class="text-white text-xl font-medium text-end max-w-[20rem]">{{ product.product_id }}</span>
                     </p>
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">
-                        <span class="text-white text-xl">Получатель:</span> 
+                        <span class="text-white text-xl">ФИО получателя:</span>
                         <span class="text-white text-xl font-medium text-end max-w-[20rem]">{{ product.recipient_fullname }}</span>
                     </p>
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">
@@ -30,7 +30,7 @@
                         <span class="text-white text-xl font-medium text-end max-w-[20rem]">{{ product.recipient_passport|cut:" "|slice:"0:2" }} {{ product.recipient_passport|cut:" "|slice:"2:" }}</span>
                     </p>
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">
-                        <span class="text-white text-xl">Адрес дотавки:</span> 
+                        <span class="text-white text-xl">Адрес:</span>
                         <span class="text-white text-xl font-medium text-end max-w-[20rem]">{{ product.recipient_address }}</span>
                     </p>
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">

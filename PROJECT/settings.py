@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "cargo-star.uz",
     "www.cargo-star.uz",
+    "*"
 ]
 
 
@@ -168,3 +169,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = reverse_lazy("index")
 LOGOUT_REDIRECT_URL = reverse_lazy("login")
+
+UNFOLD = {
+    "SITE_TITLE": "Админ панель Cargostar",
+    "SITE_HEADER": "Cargostar",
+    "SHOW_BACK_BUTTON": True,
+}
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://cargo-star.uz",
+    "https://e348-84-54-120-157.ngrok-free.app",
+]
+

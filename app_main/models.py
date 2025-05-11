@@ -14,7 +14,7 @@ class SupplierExcelDocumentsParent(models.Model):
         ordering = ["created"]
 
     def __str__(self):
-        return self.created
+        return f"{self.created}"
 
 
 class ProductExcelDocumentsParent(models.Model):
@@ -28,7 +28,7 @@ class ProductExcelDocumentsParent(models.Model):
         ordering = ["created"]
 
     def __str__(self):
-        return self.created
+        return f"{self.created}"
 
 
 class SupplierExcelDocument(models.Model):
