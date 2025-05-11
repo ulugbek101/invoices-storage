@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from unfold.admin import ModelAdmin
+from unfold.admin import ModelAdmin, TabularInline
 
 from .models import (
     DeliveryBatch,
@@ -18,6 +18,26 @@ admin.site.site_title = "Админка Cargo Start"
 admin.site.index_title = "Добро пожаловать в административную панель Cargo Star"
 
 admin.site.unregister(Group)
+
+
+class SupplierExcelDocumentTabularAdmin(TabularInline):
+    model = models.SupplierExcelDocument
+    extra = 1
+
+
+class ExcelDocumentTabularAdmin(TabularInline):
+    model = models.ExcelDocument
+    extra = 1
+
+
+@admin.register(models.SupplierExcelDocumentsParent)
+class SupplierExcelDocumentsParentAdmin(admin.ModelAdmin):
+    inlines = [SupplierExcelDocumentTabularAdmin]
+
+
+@admin.register(models.ProductExcelDocumentsParent)
+class ProductExcelDocumentsParentAdmin(admin.ModelAdmin):
+    inlines = [ExcelDocumentTabularAdmin]
 
 
 @admin.register(DeliveryBatch)
@@ -82,21 +102,6 @@ class ProductAdmin(ModelAdmin):
             "fields": ("tn_ved", "shk")
         })
     )
-
-
-@admin.register(ExcelDocument)
-class ExcelDocumentAdmin(ModelAdmin):
-    list_display = ("document", "created")
-    readonly_fields = ("created",)
-
-
-@admin.register(SupplierExcelDocument)
-class SupplierExcelDocumentAdmin(ModelAdmin):
-    list_display = ("document", "created")
-    readonly_fields = ("created",)
-
-    def __str__(self):
-        return str(self.created)
 
 
 @admin.register(Supplier)
