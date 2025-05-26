@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
+
+env = Env()
+env.read_env()
 
 from django.urls import reverse_lazy
 
@@ -23,9 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-rg)@uf3zkkt7gwlh%juf(#%0)$^yq!4-k$y1c0q%e(ti-=&uc1"
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG")
 
 LOGGING = {
     'version': 1,
@@ -128,8 +134,8 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'myproject',
-            'USER': 'myprojectuser',
+            'NAME': 'cargostar',
+            'USER': 'cargostar_user',
             'PASSWORD': 'password',
             'HOST': 'localhost',
             'PORT': '',

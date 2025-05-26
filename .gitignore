@@ -1,4 +1,7 @@
 .venv/
+documents/
+.env
+static/
 .idea/
 .DS_Store
 db.sqlite3
