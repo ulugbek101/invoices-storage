@@ -47,7 +47,7 @@ class SupplierExcelDocument(models.Model):
         ordering = ["created"]
 
     def __str__(self):
-        return self.document
+        return f"{self.document}"
 
 
 class ExcelDocument(models.Model):
@@ -124,7 +124,7 @@ class Product(models.Model):
         ordering = ["created"]
 
     def __str__(self):
-        return self.product_id
+        return f"{self.product_id}"
 
     @property
     def total_price(self):
