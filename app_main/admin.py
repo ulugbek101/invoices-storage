@@ -31,12 +31,12 @@ class ExcelDocumentTabularAdmin(TabularInline):
 
 
 @admin.register(models.SupplierExcelDocumentsParent)
-class SupplierExcelDocumentsParentAdmin(admin.ModelAdmin):
+class SupplierExcelDocumentsParentAdmin(ModelAdmin):
     inlines = [SupplierExcelDocumentTabularAdmin]
 
 
 @admin.register(models.ProductExcelDocumentsParent)
-class ProductExcelDocumentsParentAdmin(admin.ModelAdmin):
+class ProductExcelDocumentsParentAdmin(ModelAdmin):
     inlines = [ExcelDocumentTabularAdmin]
 
 
