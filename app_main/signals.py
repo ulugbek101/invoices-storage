@@ -36,7 +36,7 @@ def populate_product_document(sender, instance, created, **kwargs):
 
     delivery_batch, _ = DeliveryBatch.objects.get_or_create(
         title=title,
-        manifest_register_number=manifest_register_number,
+        manifest_register_number=manifest_register_number.strip() if manifest_register_number else manifest_register_number,
         total_products=total_products,
         total_recipients=total_recipients,
         sender_name=sender_name,
@@ -47,7 +47,7 @@ def populate_product_document(sender, instance, created, **kwargs):
 
     for row in sheet.iter_rows(min_row=6, values_only=True):
         if not row[0]:
-            break  # Stop processing if the product_id is empty
+            break
 
         try:
             Product.objects.get_or_create(
@@ -55,24 +55,25 @@ def populate_product_document(sender, instance, created, **kwargs):
                 product_id=row[0],
                 invoice=row[1],
                 awb=row[2],
-                sticker=row[3],
-                product_name=row[4],
+                sender_number=row[3] if manifest_register_number.strip()[0] == "2" else "",
+                sender_id=row[4] if manifest_register_number.strip()[0] == "2" else "",
+                sticker=row[3] if manifest_register_number.strip()[0] != "2" else "",
+                product_name=row[4 if manifest_register_number.strip()[0] != "2" else 5],
                 netto=row[6],
                 brutto=row[7],
                 quantity=row[8],
                 price=row[9],
-                currency=row[10],
-                tn_ved=row[12],
-                shk=row[13],
-                recipient_fullname=row[14].title() if row[14] else "",
-                recipient_passport=row[15],
-                recipient_pinfl=row[16],
-                recipient_birthdate=str(row[17])[:11] if row[17] else None,
-                recipient_country_code=row[18],
-                recipient_city_name=row[19],
-                recipient_address=row[20],
-                recipient_phonenumber=row[21],
-                box_number=row[22]
+                currency=row[10 if manifest_register_number.strip()[0] != "2" else 11],
+                tn_ved=row[11 if manifest_register_number.strip()[0] != "2" else 12],
+                qr_code=row[12] if manifest_register_number.strip()[0] == "2" else "",
+                shk=row[12] if manifest_register_number.strip()[0] != "2" else "",
+                recipient_fullname=row[13].title() if manifest_register_number.strip()[0] != "2" else row[15].title(),
+                recipient_passport=row[14] if manifest_register_number.strip()[0] != "2" else row[16],
+                recipient_pinfl=row[15] if manifest_register_number.strip()[0] != "2" else row[17],
+                recipient_address=row[16] if manifest_register_number.strip()[0] != "2" else row[18],
+                recipient_phonenumber=row[17] if manifest_register_number.strip()[0] != "2" else row[19],
+                box_number=row[18] if manifest_register_number.strip()[0] != "2" else row[20],
+                recipient_birthdate=row[19] if manifest_register_number.strip()[0] != "2" else row[21]
             )
         except Exception as e:
             print(f"[ERROR: Product Row] Failed saving product row: {e}")
@@ -100,7 +101,7 @@ def populate_supplier_document(sender, instance, created, **kwargs):
             weight_val = None
 
         try:
-            Supplier.objects.create(
+            supplier, created = Supplier.objects.get_or_create(
                 date=row[1],
                 sender=row[2].strip().title() if isinstance(row[2], str) else None,
                 number=row[3],
@@ -111,8 +112,6 @@ def populate_supplier_document(sender, instance, created, **kwargs):
                 payment_type=row[8].strip().upper() if isinstance(row[8], str) else None,
                 price=row[9],
                 additional_percent=row[10].replace("%", "") if isinstance(row[10], str) else "",
-                # Uncomment and fix if you want to calculate final_price automatically
-                # final_price=...
             )
         except Exception as e:
             print(f"[ERROR: Supplier Row] Failed saving supplier row: {e}")

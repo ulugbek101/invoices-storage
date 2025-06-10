@@ -23,7 +23,7 @@
                     </p>
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">
                         <span class="text-white text-xl">Дата рождения (ГГГГ-ММ-ДД):</span> 
-                        <span class="text-white text-xl font-medium text-end max-w-[20rem]">{{ product.recipient_birthdate }}</span>
+                        <span class="text-white text-xl font-medium text-end max-w-[20rem]">{{ product.recipient_birthdate|slice:"10" }}</span>
                     </p>
                     <p class="border-b border-b-slate-500 flex flex-row items-center justify-between p-4">
                         <span class="text-white text-xl">Паспорт:</span> 
@@ -45,10 +45,10 @@
                 <h3 class="text-white text-2xl">
                     Поставщик: 
                     <span class="font-bold">
-                        {% if product.delivery_batch.manifest_register_number == 511 %}
-                            Azon
-                        {% elif product.delivery_batch.manifest_register_number == 177 %}
+                        {% if product.delivery_batch.manifest_register_number.0 == "5" %}
                             Wildberries
+                        {% elif product.delivery_batch.manifest_register_number.0 == "2" %}
+                            Ozon
                         {% else %}
                             Неизвестный поставщик
                         {% endif %}
@@ -98,37 +98,37 @@
                 <tbody>
                         <tr class="odd:bg-gray-900 even:bg-gray-50 even:bg-gray-800 border-b border-gray-700 border-gray-200">
                             <td class="px-6 py-4 text-start">
-                                {{ product.invoice }}
+                                {{ product.invoice|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.awb }}
+                                {{ product.awb|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.sticker }}
+                                {{ product.sticker|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.netto }}
+                                {{ product.netto|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.brutto }}
+                                {{ product.brutto|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.quantity }}
+                                {{ product.quantity|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.price }}
+                                {{ product.price|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.tn_ved }}
+                                {{ product.tn_ved|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.shk }}
+                                {{ product.shk|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                {{ product.recipient_country_code }}
+                                {{ product.recipient_country_code|default_if_none:"-" }}
                             </td>
                             <td class="px-6 py-4 text-end">
-                                {{ product.box_number }}
+                                {{ product.box_number|default_if_none:"-" }}
                             </td>
                         </tr>
                 </tbody>

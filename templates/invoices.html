@@ -17,7 +17,7 @@
                                     Название продукта
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Накладной номер
+                                    Номер накладной
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Количество
@@ -67,7 +67,7 @@
 
             {% elif success == False and not products %}
                 <div class="w-full h-full flex items-center justify-center">
-                    <p class="text-white font-medium text-2xl opacity-50">Информация о товаре с ID "{{  product_id }}" не найдена 😑</p>
+                    <p class="text-white font-medium text-2xl opacity-50">Информация о товаре с ID "{{  id }}" не найдена 😑</p>
                 </div>
             {% endif %}
         </div>

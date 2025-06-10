@@ -114,6 +114,11 @@ class Product(models.Model):
     recipient_address = models.CharField(max_length=255, null=True)
     recipient_phonenumber = models.CharField(max_length=255, null=True)
     box_number = models.CharField(max_length=255, null=True)
+
+    sender_number = models.CharField(max_length=255, null=True)
+    sender_id = models.CharField(max_length=255, null=True)
+    qr_code = models.CharField(max_length=255, null=True)
+
     id = models.UUIDField(default=uuid4, unique=True, editable=False, primary_key=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
